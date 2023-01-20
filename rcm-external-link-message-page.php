@@ -13,7 +13,7 @@
 */
 
 
-use inc\WP_Customize_Tiny_Control;
+use rcm_eump_transparencyreport\WP_Customize_Tiny_Control;
 
 class RcmExternalLinkMessagePage{
 
@@ -27,6 +27,33 @@ class RcmExternalLinkMessagePage{
     }
     private function init()
     {
+
+        register_activation_hook(__FILE__, function ()
+        {
+            $page_title = __('RCM External Link Message Page','rcm-external-link-message-page');
+            $page_content = '';
+            $page_check = get_page_by_title($page_title);
+            $new_page = array(
+                'post_type' => 'page',
+                'post_title' => $page_title,
+                'post_content' => $page_content,
+                'post_status' => 'publish',
+                'post_author' => 1,
+            );
+            if(!isset($page_check->ID)) {
+                $new_page_id = wp_insert_post($new_page);
+                update_post_meta($new_page_id, '_wp_page_template', 'templates/rottencodemonkey-eump.php');
+                //update option
+                update_option('rcm_eump_page_id', $new_page_id);
+            }
+        });
+
+        add_action( 'wp_enqueue_scripts',  function () {
+            if ( is_page_template( 'templates/rottencodemonkey-eump.php' ) ) {
+                wp_enqueue_style( 'rottencodemonkey-eump', plugin_dir_url(__FILE__) .  'assets/css/rottencodemonkey-eump.css' );
+            }
+        });
+
         add_action('wp_ajax_rcm_get_eump', function (){
             if (is_admin()){
                 $page_id = get_option('rcm_eump_page_id');
@@ -57,25 +84,7 @@ class RcmExternalLinkMessagePage{
             wp_enqueue_script( 'wp-rcm-external-link-message-page', plugin_dir_url(__FILE__) . '/assets/js/rcm-external-link-message-page.js');
         });
 
-        register_activation_hook(__FILE__, function ()
-        {
-            $page_title = __('RCM External Link Message Page','rcm-external-link-message-page');
-            $page_content = '';
-            $page_check = get_page_by_title($page_title);
-            $new_page = array(
-                'post_type' => 'page',
-                'post_title' => $page_title,
-                'post_content' => $page_content,
-                'post_status' => 'publish',
-                'post_author' => 1,
-            );
-            if(!isset($page_check->ID)) {
-                $new_page_id = wp_insert_post($new_page);
-                update_post_meta($new_page_id, '_wp_page_template', 'templates/rottencodemonkey-eump.php');
-                //update option
-                update_option('rcm_eump_page_id', $new_page_id);
-            }
-        });
+
 
         $this->rcmCreateTemplates();
         $this->rcmCreateWpCustomize();

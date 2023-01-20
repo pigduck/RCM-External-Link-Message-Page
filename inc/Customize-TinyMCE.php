@@ -1,6 +1,6 @@
 <?php
 
-namespace inc;
+namespace rcm_eump_transparencyreport;
 
 if (class_exists('WP_Customize_Control')) {
 
@@ -24,7 +24,7 @@ if (class_exists('WP_Customize_Control')) {
             ?>
             <label>
                 <span class="customize-control-title"><?php echo esc_html($this->label); ?></span>
-                <input id="<?php echo $this->id ?>-link" class="wp-editor-area" type="hidden" <?php $this->link(); ?> value="<?php echo esc_textarea($value); ?>">
+                <input id="<?php echo esc_attr($this->id); ?>-link" class="wp-editor-area" type="hidden" <?php esc_url($this->link()); ?> value="<?php echo esc_textarea($value); ?>">
                 <?php
                 wp_editor($value, $this->id, [
                     'textarea_name' => $this->id,
