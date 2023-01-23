@@ -51,6 +51,11 @@ class RcmExternalLinkMessagePage{
         add_action( 'wp_enqueue_scripts',  function () {
             if ( is_page_template( 'templates/rottencodemonkey-eump.php' ) ) {
                 wp_enqueue_style( 'rottencodemonkey-eump', plugin_dir_url(__FILE__) .  'assets/css/rottencodemonkey-eump.css' );
+                $rcm_eump_page_css = get_theme_mod('rcm_eump_css');
+                wp_register_style( 'rcm_eump_page_css', false );
+                wp_enqueue_style( 'rcm_eump_page_css' );
+                wp_add_inline_style( 'rcm_eump_page_css', $rcm_eump_page_css);
+
             }
         });
 
@@ -212,8 +217,13 @@ class RcmExternalLinkMessagePage{
                 'settings' => 'rcm_eump_css',
                 'code_type' => 'text/css',
             )));
+
+
         } );
     }
 }
+
+
+
 
 new RcmExternalLinkMessagePage();

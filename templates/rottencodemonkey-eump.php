@@ -46,8 +46,5 @@
     </div>
 <?php endif; ?>
 <?php wp_footer(); ?>
-<style>
-    <?php echo esc_html(get_theme_mod('rcm_eump_css')); ?>
-</style>
 </body>
 </html>
