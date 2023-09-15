@@ -23,6 +23,7 @@ class RcmExternalLinkMessagePage
         if (is_admin()) {
             require_once(ABSPATH . 'wp-admin/includes/plugin.php');
         }
+        if ( ! defined( 'ABSPATH' ) ) exit;
 
         $this->init();
     }
